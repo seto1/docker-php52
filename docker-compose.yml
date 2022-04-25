@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  php52:
+    build: ./
+    volumes:
+      - ../../:/var/www/html
+      - ./php.ini:/usr/local/etc/php/php.ini
+    # for vagrant
+    # extra_hosts:
+    #   - "host.docker.internal:172.17.0.1"
+  httpd:
+    image: httpd
+    volumes:
+      - ../../:/var/www/html
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+    links:
+      - php52:php52
+    ports:
+      - "8052:80"
